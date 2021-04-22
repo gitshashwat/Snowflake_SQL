@@ -1,0 +1,16 @@
+1. Write a query to update three columns in a table A having opcode in (5,8,2) taking them from another table B. The columns are Age,Flag and DOB. 
+Their datatype are number,boolean and date.
+DOB is a concatenation of another three columns in the table (viz DAY,MONTH,YEAR). The common column is DATE_CHECK_ID. 
+[Also specify the limitations or challenges you can face in the data while doing this in where condition]
+
+Ans:
+ALTER TABLE A add column AGE number, FLAG1_BIO_DOB BOOLEAN, DOB date;
+UPDATE A t
+set t.AGE = sr.AGE, t.DOB = to_date(concat(sr.YEAR,'-',sr.MONTH,'-', sr.DAY), 'YYYY-MM-DD'),
+t.FLAG1_BIO_DOB=sr.FLAG1_BIO_DOB
+from B sr
+where t.DATE_CHECK_ID=sr.DATE_CHECK_ID and t.OPCODE in (5,8,2) and 
+sr.YEAR<9999 and sr.month<13 and sr.day<32 and 
+sr.year is not null and sr.month is not null and sr.day is not null
+and sr.YEAR>999 and sr.month>0 and sr.day>0;
+
